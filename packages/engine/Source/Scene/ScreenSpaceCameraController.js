@@ -1880,7 +1880,8 @@ function spin3D(controller, startPosition, movement) {
 
   if (Cartesian2.equals(startPosition, controller._rotateMousePosition)) {
     if (controller._looking) {
-      look3D(controller, startPosition, movement, up);
+      return;
+      // look3D(controller, startPosition, movement, up);
     } else if (controller._rotating) {
       rotate3D(controller, startPosition, movement);
     } else if (controller._strafing) {
@@ -1995,6 +1996,19 @@ function rotate3D(
   const scene = controller._scene;
   const camera = scene.camera;
   const canvas = scene.canvas;
+
+  if (defined(camera.operatablePosition)) {
+    if (
+      controller._tiltCenter.x < camera.operatablePosition.min.x ||
+      controller._tiltCenter.y < camera.operatablePosition.min.y ||
+      controller._tiltCenter.z < camera.operatablePosition.min.z ||
+      controller._tiltCenter.x > camera.operatablePosition.max.x ||
+      controller._tiltCenter.y > camera.operatablePosition.max.y ||
+      controller._tiltCenter.z > camera.operatablePosition.max.z
+    ) {
+      return;
+    }
+  }
 
   const oldAxis = camera.constrainedAxis;
   if (defined(constrainedAxis)) {

@@ -256,6 +256,8 @@ function Camera(scene) {
   mag += mag * Camera.DEFAULT_VIEW_FACTOR;
   Cartesian3.normalize(this.position, this.position);
   Cartesian3.multiplyByScalar(this.position, mag, this.position);
+
+  this.operatablePosition = undefined;
 }
 
 /**
